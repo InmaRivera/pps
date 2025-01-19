@@ -1,29 +1,36 @@
+import unicodedata
 
-# # Usamos la palabra reservada def para crear la función
-# def esPalindromo(palabra):
-#     # Limpiar la cadena: eliminar espacios, convertir a minúsculas y quitar caracteres no alfanuméricos
-#     palabra_limpia = ''.join(char.lower() for char in palabra if char.isalnum())
-    
-#     # Comprobar si es un palíndromo
-#     return palabra_limpia == palabra_limpia[::-1]  # Compara la cadena limpia con su reverso
-
-# # Solicitar entrada del usuario
-# palabra = input('Escriba una palabra o frase: ')
-# print(palabra, '¿es un palíndromo?', esPalindromo(palabra))#Si es palíndroma devuelve True // si no es palíndroma devuelve False
-
-# Usamos la palabra reservada def para crear la función
 def esPalindromo(palabra):
-    # Limpiar la cadena: eliminar espacios, convertir a minúsculas y quitar caracteres no alfanuméricos
-    palabra_limpia = ''.join(char.lower() for char in palabra if char.isalnum())
-    
-    # Comprobar si es un palíndromo
-    return palabra_limpia == palabra_limpia[::-1]  # Compara la cadena limpia con su reverso
+    try:
+        # Asegurarse de que el parámetro sea una cadena
+        if not isinstance(palabra, str):
+            raise ValueError("El parámetro debe ser una cadena.")
+        
+        # Normalizar la cadena para eliminar tildes y otros caracteres especiales
+        palabra_normalizada = unicodedata.normalize('NFKD', palabra).encode('ascii', 'ignore').decode('utf-8')
+        
+        # Limpiar la cadena: eliminar espacios, convertir a minúsculas y quitar caracteres no alfanuméricos
+        palabra_limpia = ''.join(char.lower() for char in palabra_normalizada if char.isalnum())
+        
+        # Comprobar si es un palíndromo
+        return palabra_limpia == palabra_limpia[::-1]  # Compara la cadena limpia con su reverso
 
-# Solicitar entrada del usuario
-palabra = input('Escriba una palabra o frase: ')
+    except Exception as e:
+        print(f"Error en la función esPalindromo: {e}")
+        return False
 
-# Evaluar y mostrar el mensaje adecuado
-if esPalindromo(palabra):
-    print(palabra,': Sí es palíndroma.')
-else:
-    print(palabra,': No es palíndroma.')
+if __name__ == "__main__":
+    while True:
+        # Solicitar entrada del usuario
+        palabra = input('Escriba una palabra o frase (o escriba "salir" para terminar): ')
+        
+        # Salir del bucle si el usuario lo indica
+        if palabra.lower() == "salir":
+            print("Programa finalizado. ¡Hasta luego!")
+            break
+        
+        # Evaluar y mostrar el mensaje adecuado
+        if esPalindromo(palabra):
+            print(f'"{palabra}" : Sí es palíndroma.')
+        else:
+            print(f'"{palabra}" : No es palíndroma.')
