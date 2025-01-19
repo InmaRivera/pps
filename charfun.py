@@ -4,8 +4,8 @@ def esPalindromo(palabra):
     try:
         # Asegurarse de que el parámetro sea una cadena
         if not isinstance(palabra, str):
-            raise ValueError("El parámetro debe ser una cadena.")
-        
+            raise ValueError("El parámetro debe ser una cadena.")  # Lanzar ValueError explícito
+
         # Normalizar la cadena para eliminar tildes y otros caracteres especiales
         palabra_normalizada = unicodedata.normalize('NFKD', palabra).encode('ascii', 'ignore').decode('utf-8')
         
@@ -15,9 +15,12 @@ def esPalindromo(palabra):
         # Comprobar si es un palíndromo
         return palabra_limpia == palabra_limpia[::-1]  # Compara la cadena limpia con su reverso
 
+    except ValueError:
+        raise  # Re-lanzar el error para que los tests lo detecten
     except Exception as e:
         print(f"Error en la función esPalindromo: {e}")
         return False
+
 
 if __name__ == "__main__":
     while True:
